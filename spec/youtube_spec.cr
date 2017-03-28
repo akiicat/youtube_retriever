@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe Youtube::Info do
+describe Youtube do
   # TODO: Write tests
 
   it "works" do
