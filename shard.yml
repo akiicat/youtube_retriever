@@ -1,0 +1,13 @@
+name: youtube-info
+version: 0.1.0
+
+authors:
+  - Akiicat <aaaa1379@gmail.com>
+
+targets:
+  youtube-info:
+    main: src/youtube-info.cr
+
+crystal: 0.21.1
+
+license: MIT
