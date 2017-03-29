@@ -13,10 +13,6 @@ describe URI do
       "s"=>"32E3D5A7E5C844B01F7E8049B3CDEC18DF37F5F0B.DFAD820780E2C111F65AE93FA69BBA2200775D0A"
     }
 
-    p URI.decode_www_form(q1)
-    p "--"
-    p a1
-
     URI.decode_www_form(q1).size.should eq a1.size
     URI.decode_www_form(q1).to_a.should eq a1.to_a
   end

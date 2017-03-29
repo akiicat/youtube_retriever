@@ -23,6 +23,6 @@ class URI
       k = k.scrub
       v = v.scrub
     end
-    ary.to_h
+    ary
   end
 end
