@@ -2,6 +2,7 @@ require "../helpers/string_helper"
 
 class Youtube
   def self.apply_cipher(str)
+    return "" if str.empty?
     cipher = "a s3 r s2 r s1 r w67"
     cipher.split.each do |op|
       op = "#{op}0" if op[1..-1].empty?
