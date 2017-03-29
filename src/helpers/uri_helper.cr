@@ -4,7 +4,6 @@ TBLDECWWWCOMP_ = {"%00"=>"\x00", "%01"=>"\x01", "%02"=>"\x02", "%03"=>"\x03", "%
 
 class URI
   def self.decode_www_form(str, separator='&')
-    raise ArgumentError, "the input of #{self.name}.#{__method__} must be ASCII only string" unless str.ascii_only?
     ary = [] of Tuple(String, String)
     return ary if str.empty?
     str.split(separator) do |string|
