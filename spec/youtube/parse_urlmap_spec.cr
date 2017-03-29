@@ -35,12 +35,6 @@ describe Youtube do
         "type"=>"video/3gpp; codecs=\"mp4v.20.3, mp4a.40.2\"", "url"=>"https://r5---sn-ipoxu-un56.googlevideo.com/videoplayback?mm=31&clen=2910217&mn=sn-ipoxu-un56&id=o-AApYzSAoVZcOSbj-yOws8sHDB4DHHKSEedU71E1ZFa4p&gir=yes&initcwndbps=2917500&source=youtube&mt=1490753246&mv=m&ms=au&lmt=1431608692852431&dur=284.908&mime=video%2F3gpp&key=yt6&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cupn%2Cexpire&expire=1490774975&requiressl=yes&itag=17&pl=24&ip=61.220.182.115&ei=XxfbWLniCcKO4AKpkoXgDw&upn=QW9MWyooct4&ipbits=0&signature=DA2671BCB068364DA49E1936A6D00EE86F5CBE.CE7278520EA22B2EC99014A917EAE8714615F"
       }
     ]
-    # 
-    # p "--"
-    # p Youtube.parse_urlmap(q1).to_a.first
-    # p "-----"
-    # p a1.to_a.first
-    # p "--"
 
     Youtube.parse_urlmap(q1).size.should eq a1.size
     Youtube.parse_urlmap(q1).to_a.should eq a1.to_a

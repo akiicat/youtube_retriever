@@ -1,5 +1,5 @@
 require "./youtube/*"
 
-module Youtube
+class Youtube
   # TODO Put your code here
 end

@@ -1,2 +1,2 @@
 require "spec"
-require "../src/youtube-info"
+require "../src/youtube"
