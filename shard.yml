@@ -8,6 +8,11 @@ targets:
   youtube-info:
     main: src/youtube-info.cr
 
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+    branch: master
+
 crystal: 0.21.1
 
 license: MIT
