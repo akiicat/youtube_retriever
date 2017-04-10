@@ -1,7 +1,7 @@
 require "json"
 
 class Youtube
-  VALID_URL = /^((?:https?:\/\/|\/\/)(?:(?:(?:(?:www\.)?youtube\.com\/)(?:(?:(?:v|embed|e)\/(?!videoseries))|(?:(?:(?:watch|movie)\/?)?(?:\?)v=)))|(?:youtu\.be)\/))?([0-9A-Za-z_-]{11})/
+  VALID_URL = /^((?:https?:\/\/|\/\/)(?:(?:(?:(?:www\.)?youtube\.com\/)(?:(?:(?:v|embed|e)\/(?!videoseries))|(?:(?:(?:watch|movie)\/?)?(?:\?)v=)))|(?:youtu\.be)\/))?(?<video_id>[0-9A-Za-z_-]{11})/
 
   # url = "https://www.youtube.com/watch?v=iDfZua4IS4A"
   # _real_extract(url)
@@ -12,8 +12,8 @@ class Youtube
   end
 
   def self.extract_id(url)
-    match = VALID_URL.match(url)
-    raise "Invalid URL: #{url}" if !match
-    match.try(&.[2])
+    video_id = VALID_URL.match(url).try(&.["video_id"]).to_s
+    raise "Invalid URL: #{url}" if video_id.empty?
+    video_id
   end
 end
