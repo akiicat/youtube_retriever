@@ -9,6 +9,18 @@ describe Youtube do
     end
   end
 
+  describe "#get_ytplayer_config" do
+    it "match" do
+      webpage = "<pre>;ytplayer.config = {\"key\":\"value\"};ytplayer<post>"
+      Youtube.get_ytplayer_config(webpage)["key"].should eq "value"
+    end
+
+    it "not match" do
+      webpage = "not match"
+      Youtube.get_ytplayer_config(webpage).should eq Hash(String, String).new
+    end
+  end
+
   describe "#extract_id" do
     it "extract video id from youtube.com" do
       url = "https://www.youtube.com/watch?v=iDfZua4IS4A&has_verified=1"
