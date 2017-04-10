@@ -1,23 +1,24 @@
+require "http/client"
 
-# class InfoExtractor:
-#
-#     def _download_webpage(self, url_or_request, video_id, note=None, errnote=None, fatal=True, tries=1, timeout=5, encoding=None, data=None, headers={}, query={}):
-#         """ Returns the data of the page as a string """
-#         success = False
-#         try_count = 0
-#         while success is False:
-#             try:
-#                 res = self._download_webpage_handle(url_or_request, video_id, note, errnote, fatal, encoding=encoding, data=data, headers=headers, query=query)
-#                 success = True
-#             except compat_http_client.IncompleteRead as e:
-#                 try_count += 1
-#                 if try_count >= tries:
-#                     raise e
-#                 self._sleep(timeout, video_id)
-#         if res is False:
-#             return res
-#         else:
-#             content, _ = res
-#             return content
-#
-# end
+class InfoExtractor
+  def self.download_webpage(url, video_id, tries = 1, timeout = 5)
+    response = ""
+    loop do
+      begin
+        puts "#{video_id}: Downloading webpage"
+        response = HTTP::Client.get(url).body
+        break
+      rescue e
+        raise e if (tries -= 1) <= 0
+        sleep(timeout, video_id)
+      end
+    end
+    response
+  end
+
+  def self.sleep(timeout, video_id, msg = nil)
+    msg ||= "#{video_id}s: Waiting for #{timeout}s seconds"
+    puts msg
+    sleep(timeout)
+  end
+end

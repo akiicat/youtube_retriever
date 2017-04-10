@@ -5,13 +5,13 @@ describe Youtube do
 
   describe "#_real_extract" do
     pending "extract youtube video info" do
-      
+
     end
   end
 
   describe "#extract_id" do
     it "extract video id from youtube.com" do
-      url = "https://www.youtube.com/watch?v=iDfZua4IS4A&sf=sdf"
+      url = "https://www.youtube.com/watch?v=iDfZua4IS4A&has_verified=1"
       Youtube.extract_id(url).should eq "iDfZua4IS4A"
     end
 
