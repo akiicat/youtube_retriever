@@ -2,43 +2,44 @@ require "./extractor"
 
 class Decipherer
   @actions = Hash(String, String).new
-  @code = ""
-  @sig_func = ""
+  @js_code = ""
+  @encrypted_sig = ""
+  @decrypted_sig = ""
 
-  def initialize(@cipher : String, @url : String)
-  	@code = HTTP::Client.get(@url).body
-
-    # Example:
-   	#     "signature",zc(f.s)
-    # Match:
-    # 		sig => "zc"
-    @sig_func = @code.match(/(["\'])signature\1\s*,\s*(?<sig>[a-zA-Z0-9$]+)\(/m).try(&.["sig"]).to_s
+  def initialize(@encrypted_sig : String, @url : String)
+  	@js_code = HTTP::Client.get(@url).body
   end
 
-  def parse_cipher()
+  def parse_cipher
     lines = extract_function
     lines.map! { |l| interpret_statement(l) }.delete("")
     lines.join(" ")
   end
 
   def extract_function
-		# ; #{@sig_func} = function(<args>) {<code>}
+    # Example:
+   	#     "signature",zc(f.s)
+    # Match:
+    # 		sig => "zc"
+    sig_function_name = @js_code.match(/(["\'])signature\1\s*,\s*(?<sig>[a-zA-Z0-9$]+)\(/m).try(&.["sig"]).to_s
+
+		# ; #{sig_function_name} = function(<args>) {<code>}
     #
     # Example:
     #   	; zc=function(a){a=a.split("");yc.hG(a,1);yc.Kx(a,44);yc.Dt(a,23);yc.hG(a,1);return a.join("")}
     # Match:
     #			args => "a"
 		#     code => "a=a.split(\"\");yc.hG(a,1);yc.Kx(a,44);yc.Dt(a,23);yc.hG(a,1);return a.join(\"\")"
-    code = @code.match(/(?:
-        function\s+#{@sig_func}|
-     		[{;,]\s*#{@sig_func}\s*=\s*function|
-     		var\s+#{@sig_func}\s*=\s*function
+    code = @js_code.match(/(?:
+        function\s+#{sig_function_name}|
+     		[{;,]\s*#{sig_function_name}\s*=\s*function|
+     		var\s+#{sig_function_name}\s*=\s*function
       )
      	\s*\((?<args>[^)]*)\)\s*
       \{(?<code>[^}]+)\}
     /xm).try(&.["code"]).to_s
 
-    raise "Could not find JS function #{@url} with function name #{@sig_func}" unless code
+    raise "Could not find JS function #{@url} with function name #{sig_function_name}" unless code
 
     return code.split(";")
   end
@@ -87,7 +88,7 @@ class Decipherer
     # 	  }
     # Match:
     # 	  fields => "Dt:function(a){a.reverse()},Kx:function(a,b){var c=a[0];a[0]=a[b%a.length];a[b]=c},hG:function(a,b){a.splice(0,b)}"
-    fields = @code.match(/(?<!this\.)#{obj_name}\s*=\s*{\s*(?<fields>([a-zA-Z$0-9]+\s*:\s*function\(.*?\)\s*{.*?}(?:,\s*)?)*)}\s*/m).try(&.["fields"]).to_s
+    fields = @js_code.match(/(?<!this\.)#{obj_name}\s*=\s*{\s*(?<fields>([a-zA-Z$0-9]+\s*:\s*function\(.*?\)\s*{.*?}(?:,\s*)?)*)}\s*/m).try(&.["fields"]).to_s
 
     # <key>:function(<args>){<code>}
     #
