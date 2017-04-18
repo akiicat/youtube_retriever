@@ -1,4 +1,4 @@
-require "./spec_helper"
+require "./extractor_spec"
 
 describe InfoExtractor do
   describe "#download_webpage" do

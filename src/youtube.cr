@@ -1,6 +1,5 @@
 require "kemal"
-require "json"
-require "./extractor/*"
+require "./config"
 
 before_get "/" do |env|
   env.response.content_type = "application/json; charset=utf-8"

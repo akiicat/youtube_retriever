@@ -1,4 +1,4 @@
-require "./spec_helper"
+require "./extractor_spec"
 
 describe Decipherer do
   describe "#decrypt" do

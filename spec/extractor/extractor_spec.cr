@@ -1,2 +1,2 @@
-require "../spec_helper"
 require "../../src/extractor/*"
+require "../spec_helper"

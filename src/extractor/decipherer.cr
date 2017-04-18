@@ -1,4 +1,4 @@
-require "./extractor"
+require "../config"
 
 class Decipherer
   property url           = ""
@@ -9,7 +9,7 @@ class Decipherer
   getter   actions       = Hash(String, String).new
 
   def initialize(@encrypted_sig, @url)
-  	@js_code = HTTP::Client.get(@url).body
+  	@js_code = InfoExtractor.download_webpage(@url)
     @decrypted_sig = @encrypted_sig
   end
 
