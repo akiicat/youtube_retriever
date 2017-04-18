@@ -1,22 +1,36 @@
 require "./extractor"
 
 class Decipherer
-  @actions = Hash(String, String).new
-  @js_code = ""
-  @encrypted_sig = ""
-  @decrypted_sig = ""
+  property url           = ""
+  property encrypted_sig = ""
+  getter   decrypted_sig = ""
+  getter   js_code       = ""
+  getter   decoder_steps = Array(String).new
+  getter   actions       = Hash(String, String).new
 
-  def initialize(@encrypted_sig : String, @url : String)
+  def initialize(@encrypted_sig, @url)
   	@js_code = HTTP::Client.get(@url).body
+    @decrypted_sig = @encrypted_sig
   end
 
-  def parse_cipher
-    lines = extract_function
-    lines.map! { |l| interpret_statement(l) }.delete("")
-    lines.join(" ")
+  def decrypt
+    extract_function do |stmt|
+      stmt = interpret_statement(stmt)
+      @decoder_steps.push stmt.to_s if stmt
+    end
+
+    @decoder_steps.each do |op|
+      op, n = op[0], op[1..-1].to_i? || 0
+      @decrypted_sig = case op
+        when 'r' then @decrypted_sig.reverse
+        when 's' then @decrypted_sig[n..-1]
+        when 'w' then @decrypted_sig.swap(0, n)
+      end.to_s
+    end
+    @decrypted_sig
   end
 
-  def extract_function
+  private def extract_function(&block)
     # Example:
    	#     "signature",zc(f.s)
     # Match:
@@ -30,21 +44,26 @@ class Decipherer
     # Match:
     #			args => "a"
 		#     code => "a=a.split(\"\");yc.hG(a,1);yc.Kx(a,44);yc.Dt(a,23);yc.hG(a,1);return a.join(\"\")"
-    code = @js_code.match(/(?:
+    code = @js_code.match(/
+      (?:
         function\s+#{sig_function_name}|
      		[{;,]\s*#{sig_function_name}\s*=\s*function|
      		var\s+#{sig_function_name}\s*=\s*function
       )
-     	\s*\((?<args>[^)]*)\)\s*
-      \{(?<code>[^}]+)\}
-    /xm).try(&.["code"]).to_s
+     	\s*\((?<args>[^)]*)\)
+      \s*\{(?<code>[^}]+)\}
+    /xm).try(&.["code"]).to_s.split(";").reject(&.empty?)
 
-    raise "Could not find JS function #{@url} with function name #{sig_function_name}" unless code
+    raise "Could not find JS function #{@url} with function name #{sig_function_name}" if code.empty?
 
-    return code.split(";")
+    code.each do |line|
+      yield line
+    end
+
+    return code
   end
 
-  def interpret_statement(stmt)
+  private def interpret_statement(stmt)
     # <var>.<member>(<args>)
 		#
     # Example:
@@ -60,24 +79,17 @@ class Decipherer
     args     = stmt_m.try(&.["args"]).to_s
     index    = args.match(/\d+/).try(&.[0]).to_s
 
-    rtn = ""
-    case member
-    when "split", "join"
-      # skip
-    else
-    	extract_object(obj_name, member) if !@actions.has_key?(member)
-
-      case @actions[member]
-      when "r"
-        rtn = @actions[member]
-      when "s", "w"
-        rtn = @actions[member] + index
-      end
+    if !@actions.has_key?(member) && !["split", "join"].includes?(member)
+    	extract_object(obj_name, member)
     end
-    rtn
+
+    case @actions[member]?
+      when "r"      then @actions[member]
+      when "s", "w" then @actions[member] + index
+    end
   end
 
-  def extract_object(obj_name, member)
+  private def extract_object(obj_name, member)
     # #{obj_name}={<fields>}
     #
     # Example:
@@ -106,10 +118,11 @@ class Decipherer
     #     "Kx" => "w"    # swap
     fields_m.each do |f|
       key, code = f.try &.["key"], f.try &.["code"]
-
-      @actions[key] = "s" if /splice/      =~ code
-      @actions[key] = "r" if /reverse/     =~ code
-      @actions[key] = "w" if /var.+length/ =~ code
+      @actions[key] = case code
+        when /splice/       then "s"
+        when /reverse/      then "r"
+        when /var.+length/  then "w"
+      end.to_s
     end
   end
 end
