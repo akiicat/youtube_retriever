@@ -1,8 +1,6 @@
 require "./extractor_spec"
 
 describe Youtube do
-
-
   describe "#_real_extract" do
     pending "extract youtube video info" do
 
