@@ -11,6 +11,8 @@ end
 
 get "/python" do |env|
   io = IO::Memory.new
+  Process.run("youtube-dl", ["-j", "iDfZua4IS4A"], output: io)
+  JSON.parse(io.to_s).to_json
 end
 
 
