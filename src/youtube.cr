@@ -6,8 +6,11 @@ before_get "/" do |env|
 end
 
 get "/" do |env|
-  Youtube._real_extract("iDfZua4IS4A").to_json
-  # Youtube._real_extract("iDfZua4IS4A")["args"]["title"]
+  Youtube.dump_json("iDfZua4IS4A").to_json
+end
+
+get "/python" do |env|
+  io = IO::Memory.new
 end
 
 
