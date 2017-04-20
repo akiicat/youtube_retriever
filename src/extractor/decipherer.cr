@@ -1,33 +1,34 @@
 require "../config"
 
 class Decipherer
-  property url           = ""
-  property encrypted_sig = ""
-  getter   decrypted_sig = ""
-  getter   js_code       = ""
-  getter   decoder_steps = Array(String).new
-  getter   actions       = Hash(String, String).new
+  getter url           : String
+  getter js_code       : String
+  getter actions       : Hash(String, String)
+  getter decoder_steps : String
 
-  def initialize(@encrypted_sig, @url)
-  	@js_code = InfoExtractor.download_webpage(@url)
-    @decrypted_sig = @encrypted_sig
+  def initialize(@url : String)
+    @js_code       = InfoExtractor.download_webpage(@url)
+    @actions       = Hash(String, String).new
+
+    steps = Array(String).new
+    extract_function do |stmt|
+      step = interpret_statement(stmt)
+      steps.push step.to_s if step
+    end
+    @decoder_steps = steps.join(" ")
   end
 
-  def decrypt
-    extract_function do |stmt|
-      stmt = interpret_statement(stmt)
-      @decoder_steps.push stmt.to_s if stmt
-    end
-
-    @decoder_steps.each do |op|
+  def decrypt(sig : String)
+    @decoder_steps.split(" ").each do |op|
       op, n = op[0], op[1..-1].to_i? || 0
-      @decrypted_sig = case op
-        when 'r' then @decrypted_sig.reverse
-        when 's' then @decrypted_sig[n..-1]
-        when 'w' then @decrypted_sig.swap(0, n)
+      # puts op, n
+      sig = case op
+      when 'r' then sig.reverse
+      when 's' then sig[n..-1]
+      when 'w' then sig.swap(0, n)
       end.to_s
     end
-    @decrypted_sig
+    sig
   end
 
   private def extract_function(&block)
