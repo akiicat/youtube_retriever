@@ -12,8 +12,10 @@ class Youtube
   property encoded_url_map = [] of Hash(String, String)
   property decipher = Decipherer.allocate
 
+  include InfoExtractor
+
   def initialize(url : String)
-    @video_id = InfoExtractor.extract_id(url)
+    @video_id = extract_id(url)
   end
 
   def self.dump_json(url : String)

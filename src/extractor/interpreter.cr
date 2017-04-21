@@ -1,11 +1,13 @@
 require "../config"
 
 module Interpreter
+  extend self
+
   @@url     = ""
 
   # decode_steps("https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js")
   # => "s1 w44 r s1"
-  def self.decode_steps(url)
+  def decode_steps(url)
     @@url   = url
     js_code = InfoExtractor.download_webpage(url)
 
@@ -24,7 +26,7 @@ module Interpreter
   end
 
   # find signature function content and interpreter each line statement
-  def self.extract_signature(js_code)
+  def extract_signature(js_code)
     # Example:
    	#     "signature",zc(f.s)
     # Match:
@@ -60,7 +62,7 @@ module Interpreter
   #   args:     "a,44",
   #   index:    "44"
   # }
-  def self.interpret_statement(stmt)
+  def interpret_statement(stmt)
     stmt_m = stmt.lstrip().match(/
       (?<obj_name>[a-zA-Z_$][a-zA-Z_$0-9]*)\.
       (?<member>[^(]+)
@@ -89,7 +91,7 @@ module Interpreter
   #   "Dt" => "v",    # reverse
   #   "Kx" => "w",    # swap
   # }
-  def self.extract_actions(js_code, obj_name)
+  def extract_actions(js_code, obj_name)
     # #{obj_name}={<fields>}
     #
     # Example:

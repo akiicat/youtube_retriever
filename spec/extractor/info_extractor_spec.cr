@@ -40,9 +40,9 @@ describe InfoExtractor do
       video_id = "iDfZua4IS4A"
       url = "https://www.youtube.com/watch?v=#{video_id}&gl=US&hl=en&has_verified=1&bpctr=9999999999"
       video_webpage = InfoExtractor.download_webpage(url)
-      player_url = "https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js"
+      player_url = %r(https://www.youtube.com/yts/jsbin/([^/]+)/base.js)
 
-      InfoExtractor.extract_player_url(video_webpage).should eq player_url
+      InfoExtractor.extract_player_url(video_webpage).should match player_url
     end
   end
 end

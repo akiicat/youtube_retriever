@@ -4,11 +4,13 @@ class Decipherer
   property url   : String
   property steps : String
 
+  include Interpreter
+
   def initialize(@url = "", @steps = "")
   end
 
   def decrypt(sig : String)
-    @steps = Interpreter.decode_steps(@url) if @steps.empty?
+    @steps = decode_steps(@url) if @steps.empty?
     @steps.split(" ").each do |op|
       op, n = op[0], op[1..-1].to_i? || 0
       sig = case op
