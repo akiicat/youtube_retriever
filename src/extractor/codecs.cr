@@ -1,7 +1,7 @@
 module Codecs
   # https://en.wikipedia.org/wiki/YouTube#Quality_and_formats
   # update at 2017-04-22
-  TITLE  = ["itag", "container", "video_resolution", "video_encoding", "video_profile", "video_bitrate", "audio_encoding", "audio_bitrate"]
+  TITLE  = [:itag, :container, :video_resolution, :video_encoding, :video_profile, :video_bitrate, :audio_encoding, :audio_bitrate]
   CODECS = String.build do |codecs|
     # Non-DASH
     codecs << <<-EOF
@@ -74,6 +74,7 @@ module Codecs
   extend self
 
   def format(itag : String)
+    hsh = Hash(Symbol, String).new
     CODECS.each_line do |line|
       line = line[1..-2].split("|").map { |x| x.strip }
       if line[0] == itag
@@ -81,19 +82,19 @@ module Codecs
         comment = "video only"  if line[6].empty?
         comment = "audio only"  if line[2].empty?
         comment = "live stream" if line[1] == "TS"
-        return {
-          itag:             line[0],
-          container:        line[1],
-          video_resolution: line[2],
-          video_encoding:   line[3],
-          video_profile:    line[4],
-          video_bitrate:    line[5],
-          audio_encoding:   line[6],
-          audio_bitrate:    line[7],
-          comment:          comment,
+        hsh = {
+          :itag             => line[0],
+          :container        => line[1],
+          :video_resolution => line[2],
+          :video_encoding   => line[3],
+          :video_profile    => line[4],
+          :video_bitrate    => line[5],
+          :audio_encoding   => line[6],
+          :audio_bitrate    => line[7],
+          :comment          => comment,
         }
       end
     end
-    return nil
+    return hsh
   end
 end
