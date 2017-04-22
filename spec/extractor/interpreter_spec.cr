@@ -1,11 +1,3 @@
-# decode_steps("https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js")
-# => "s1 w44 r s1"
-
-sig_id = "vfl5-0t5t"
-steps  = "s1 w44 r s1"
-url    = "https://www.youtube.com/yts/jsbin/player-en_US-#{sig_id}/base.js"
-
-
 require "./extractor_spec"
 
 describe Interpreter do

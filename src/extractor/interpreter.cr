@@ -1,5 +1,3 @@
-require "../config"
-
 module Interpreter
   extend self
 

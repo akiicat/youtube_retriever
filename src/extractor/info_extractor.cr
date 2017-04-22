@@ -1,5 +1,3 @@
-require "../config"
-
 module InfoExtractor
   extend self
 

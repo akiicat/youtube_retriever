@@ -1,4 +1,4 @@
-require "../config"
+require "./interpreter"
 
 class Decipherer
   property url   : String

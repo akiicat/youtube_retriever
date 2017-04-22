@@ -1,4 +1,4 @@
-require "../config"
+require "./info_extractor"
 
 class Youtube
   property video_id = ""
