@@ -1,4 +1,4 @@
-require "./extractor_spec"
+require "../spec_helper"
 
 describe Interpreter do
   it "#decode_steps" do

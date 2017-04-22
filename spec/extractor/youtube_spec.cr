@@ -1,4 +1,4 @@
-require "./extractor_spec"
+require "../spec_helper"
 
 describe Youtube do
 
