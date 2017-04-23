@@ -43,7 +43,7 @@ class Youtube
     rtn = {
       :title         => video_info["title"]?.to_s,
       :author        => video_info["author"]?.to_s,
-      :thumbnail_url => video_info["thumbnail_url"]?.to_s),
+      :thumbnail_url => video_info["thumbnail_url"]?.to_s,
       :streams       => decipher.package(video_info["url_encoded_fmt_stream_map"]?.to_s) + decipher.package(video_info["adaptive_fmts"]?.to_s)
     }
   end
