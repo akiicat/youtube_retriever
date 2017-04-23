@@ -6,11 +6,9 @@ class Decipherer
 
   include Interpreter
 
-  def initialize(@url = "", @steps = "")
-  end
-
-  def decode
-    @steps = decode_steps(@url)
+  def initialize(url : String = "", steps : String = "")
+    @url = url
+    @steps = steps
   end
 
   def decrypt(sig : String)
