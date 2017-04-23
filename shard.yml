@@ -1,12 +1,12 @@
-name: youtube-info
+name: yt
 version: 0.1.0
 
 authors:
   - Akiicat <aaaa1379@gmail.com>
 
 targets:
-  youtube-info:
-    main: src/youtube-info.cr
+  yt:
+    main: src/yt.cr
 
 crystal: 0.21.1
 
