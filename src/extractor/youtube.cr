@@ -2,8 +2,6 @@ require "./info_extractor"
 
 class Youtube
   property video_id : String
-  property encoded_url_map = [] of Hash(Symbol, String)
-  property adaptive_fmts = [] of Hash(Symbol, String)
 
   include InfoExtractor
 
