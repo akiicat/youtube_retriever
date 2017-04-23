@@ -9,6 +9,10 @@ class Decipherer
   def initialize(@url = "", @steps = "")
   end
 
+  def decode
+    @steps = decode_steps(@url)
+  end
+
   def decrypt(sig : String)
     @steps = decode_steps(@url) if @steps.empty?
     @steps.split(" ").each do |op|
