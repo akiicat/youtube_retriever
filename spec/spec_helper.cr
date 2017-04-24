@@ -1,4 +1,4 @@
 require "spec"
-require "../src/config"
+require "../src/youtube-retriever"
 
 LOG.level = Logger::ERROR
