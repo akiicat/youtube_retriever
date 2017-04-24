@@ -1,6 +1,6 @@
 require "./info_extractor"
 
-class Youtube
+class YoutubeRetriever
   property video_id : String
 
   include InfoExtractor

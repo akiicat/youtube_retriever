@@ -1,14 +1,21 @@
-# youtube-info
+# Youtube Retriever
 
 TODO: Write a description here
 
 ## Installation
 
-TODO: Write installation instructions here
+```yml
+dependencies:
+  youtube_retriever:
+    github: akiicat/youtube_retriever
+    branch: develop
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```cr
+require "youtube_retriever"
+```
 
 ## Development
 

@@ -1,12 +1,12 @@
-name: youtube-retriever
+name: youtube_retriever
 version: 0.1.0
 
 authors:
   - Akiicat <aaaa1379@gmail.com>
 
 targets:
-  youtube-retriever:
-    main: src/youtube-retriever.cr
+  youtube_retriever:
+    main: src/youtube_retriever.cr
 
 crystal: 0.21.1
 
