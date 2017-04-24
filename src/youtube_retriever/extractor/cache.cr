@@ -1,7 +1,7 @@
 module Cache
   extend self
 
-  @@path = "#{ENV["HOME"]}/.cache/crystal/youtube-retriever/"
+  @@path = "#{ENV["HOME"]}/.cache/crystal/youtube_retriever/"
 
   def load(player_url : String)
     full_path = @@path + name_from player_url

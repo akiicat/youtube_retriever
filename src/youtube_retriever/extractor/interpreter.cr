@@ -1,7 +1,7 @@
 module Interpreter
   extend self
 
-  @@url     = ""
+  @@url = ""
 
   # decode_steps("https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js")
   # => "s1 w44 r s1"
@@ -11,7 +11,8 @@ module Interpreter
 
     decoder = extract_signature(js_code)
     actions = extract_actions(js_code, decoder.first[:obj_name])
-    steps   = decoder.map do |s|
+
+    steps = decoder.map do |s|
       step  = actions[s[:member]?.to_s]?.to_s
       index = s[:index]?.to_s
       case step

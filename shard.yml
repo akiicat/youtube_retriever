@@ -1,17 +1,12 @@
-name: youtube-info
+name: youtube_retriever
 version: 0.1.0
 
 authors:
   - Akiicat <aaaa1379@gmail.com>
 
 targets:
-  youtube-info:
-    main: src/youtube-info.cr
-
-dependencies:
-  kemal:
-    github: kemalcr/kemal
-    branch: master
+  youtube_retriever:
+    main: src/youtube_retriever.cr
 
 crystal: 0.21.1
 
