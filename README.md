@@ -8,7 +8,7 @@
 dependencies:
   youtube_retriever:
     github: akiicat/youtube_retriever
-    branch: develop
+    branch: master
 ```
 
 ## Usage
