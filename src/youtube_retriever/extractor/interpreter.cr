@@ -1,15 +1,12 @@
 module Interpreter
   extend self
 
-  @@url = ""
-
   # decode_steps("https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js")
   # => "s1 w44 r s1"
   def decode_steps(url)
-    @@url   = url
     js_code = InfoExtractor.download_webpage(url)
 
-    decoder = extract_signature(js_code)
+    decoder = extract_signature(js_code, url)
     actions = extract_actions(js_code, decoder.first[:obj_name])
 
     steps = decoder.map do |s|
@@ -25,7 +22,7 @@ module Interpreter
   end
 
   # find signature function content and interpreter each line statement
-  def extract_signature(js_code)
+  def extract_signature(js_code, url)
     # Example:
    	#     "signature",zc(f.s)
     # Match:
@@ -49,7 +46,7 @@ module Interpreter
       \s*\{(?<code>[^}]+)\}
     /xm).try(&.["code"]).to_s.split(";").reject(&.empty?)
 
-    raise "Could not find JS function #{@@url} with function name #{sig_function_name}" if code.empty?
+    raise "Could not find JS function #{url} with function name #{sig_function_name}" if code.empty?
 
     code.map { |s| interpret_statement(s) }.select { |s| s[:obj_name] != "a" }
   end
