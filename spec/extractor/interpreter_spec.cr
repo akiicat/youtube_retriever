@@ -20,7 +20,7 @@ describe Interpreter do
       {obj_name: "yc", member: "hG", args: "a,1" , index: "1"  }
     ]
 
-    Interpreter.extract_signature(js_code).should eq decoder
+    Interpreter.extract_signature(js_code, url).should eq decoder
   end
 
   it "#interpret_statement" do
