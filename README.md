@@ -1,14 +1,22 @@
+[![Build Status](https://travis-ci.org/akiicat/youtube_retriever.svg?branch=master)](https://travis-ci.org/akiicat/youtube_retriever)
+
 # Youtube Retriever
 
-[How it works](https://www.quora.com/How-can-I-make-a-YouTube-video-downloader-web-application-from-scratch)
+Extract youtube video info. There is [How it works](https://www.quora.com/How-can-I-make-a-YouTube-video-downloader-web-application-from-scratch)
 
 ## Installation
+
+- [Install Crystal](https://crystal-lang.org/docs/installation/)
 
 ```yml
 dependencies:
   youtube_retriever:
     github: akiicat/youtube_retriever
     branch: master
+```
+
+```
+crystal deps
 ```
 
 ## Usage
