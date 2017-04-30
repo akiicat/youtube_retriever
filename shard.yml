@@ -1,5 +1,5 @@
 name: youtube_retriever
-version: 0.1.1
+version: 0.2.0
 
 authors:
   - Akiicat <aaaa1379@gmail.com>
@@ -9,5 +9,3 @@ targets:
     main: src/youtube_retriever.cr
 
 crystal: 0.22.0
-
-license: MIT
