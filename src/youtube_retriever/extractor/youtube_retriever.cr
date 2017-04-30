@@ -14,31 +14,22 @@ class YoutubeRetriever
   end
 
   def real_extract
-    channel_steps = Channel(String).new
-    channel_info  = Channel(Hash(String, JSON::Type)).new
+    LOG.info "Downloading video webpage: #{@video_id}"
+    url           = "https://www.youtube.com/embed/#{@video_id}"
+    video_webpage = download_webpage(url)
 
-    spawn do
-      LOG.info "Downloading video webpage: #{@video_id}"
-      url           = "https://www.youtube.com/watch?v=#{@video_id}&gl=US&hl=en&has_verified=1&bpctr=9999999999"
-      video_webpage = download_webpage(url)
-      player_url    = extract_player_url(video_webpage)
+    # video_info
+    sts        = extract_sts(video_webpage)
+    video_info = get_video_info(@video_id, sts)
 
-      steps = Cache.load(player_url)
-      if steps.empty?
-        steps = Interpreter.decode_steps(player_url)
-        Cache.store(player_url, steps)
-      end
-      channel_steps.send(steps)
+    # decipherer steps
+    player_url = extract_player_url(video_webpage)
+    steps = Cache.load(player_url)
+    if steps.empty?
+      steps = Interpreter.decode_steps(player_url)
+      Cache.store(player_url, steps)
     end
-
-    spawn do
-      LOG.info "Downloading video info: #{@video_id}"
-      video_info = get_video_info(@video_id)
-      channel_info.send(video_info)
-    end
-
-    video_info = channel_info.receive
-    decipher   = Decipherer.new(steps: channel_steps.receive)
+    decipher = Decipherer.new(steps: steps)
 
     rtn = {
       :title          => video_info["title"]?.to_s,
