@@ -18,13 +18,11 @@ module InfoExtractor
   end
 
   def extract_id(url)
-    begin
-      LOG.info "[EXTRACT] extract id"
-      valid_url = /^((?:https?:\/\/|\/\/)(?:(?:(?:(?:www\.)?youtube\.com\/)(?:(?:(?:v|embed|e)\/(?!videoseries))|(?:(?:(?:watch|movie)\/?)?(?:\?)v=)))|(?:youtu\.be)\/))?(?<video_id>[0-9A-Za-z_-]{11})/
-      video_id = url.match(valid_url).try(&.["video_id"]).to_s
-    rescue
-      raise "Invalid URL: #{url}"
-    end
+    LOG.info "[EXTRACT] extract id"
+    valid_url = /^((?:https?:\/\/|\/\/)(?:(?:(?:(?:www\.)?youtube\.com\/)(?:(?:(?:v|embed|e)\/(?!videoseries))|(?:(?:(?:watch|movie)\/?)?(?:\?)v=)))|(?:youtu\.be)\/))?(?<video_id>[0-9A-Za-z_-]{11})/
+    video_id = url.match(valid_url).try(&.["video_id"]).to_s
+    raise "Invalid URL: #{url}" if video_id.empty?
+    video_id
   end
 
   def get_video_info(video_id : String, sts : String = "", proto : String = "https")
