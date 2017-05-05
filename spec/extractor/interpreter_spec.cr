@@ -1,18 +1,16 @@
 require "../spec_helper"
 
-describe Interpreter do
+describe Youtube::Interpreter do
   it "#decode_steps" do
-    sig_id = "vfl5-0t5t"
-    url    = "https://www.youtube.com/yts/jsbin/player-en_US-#{sig_id}/base.js"
-    steps  = "s1 w44 r s1"
+    url = "https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js"
+    steps = "s1 w44 r s1"
 
-    Interpreter.decode_steps(url).should eq steps
+    Youtube::Interpreter.decode_steps(url).should eq steps
   end
 
   it "#extract_signature" do
-    sig_id  = "vfl5-0t5t"
-    url     = "https://www.youtube.com/yts/jsbin/player-en_US-#{sig_id}/base.js"
-    js_code = InfoExtractor.download_webpage(url)
+    url = "https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js"
+    js_code = Youtube::Webpage.new(url).content
     decoder = [
       {obj_name: "yc", member: "hG", args: "a,1" , index: "1"  },
       {obj_name: "yc", member: "Kx", args: "a,44", index: "44" },
@@ -20,33 +18,32 @@ describe Interpreter do
       {obj_name: "yc", member: "hG", args: "a,1" , index: "1"  }
     ]
 
-    Interpreter.extract_signature(js_code, url).should eq decoder
+    Youtube::Interpreter.extract_signature(js_code, url).should eq decoder
   end
 
   it "#interpret_statement" do
     stmt = "yc.Kx(a,44)"
-    rtn  = {
+    rtn = {
       obj_name: "yc",
       member:   "Kx",
       args:     "a,44",
       index:    "44"
     }
 
-    Interpreter.interpret_statement(stmt).should eq rtn
+    Youtube::Interpreter.interpret_statement(stmt).should eq rtn
   end
 
   it "#extract_actions" do
-    sig_id   = "vfl5-0t5t"
-    url      = "https://www.youtube.com/yts/jsbin/player-en_US-#{sig_id}/base.js"
-    js_code  = InfoExtractor.download_webpage(url)
+    url = "https://www.youtube.com/yts/jsbin/player-en_US-vfl5-0t5t/base.js"
+    js_code  = Youtube::Webpage.new(url).content
 
     obj_name = "yc"
-    actions  = {
+    actions = {
       "Dt" => "r",
       "Kx" => "w",
       "hG" => "s"
     }
 
-    Interpreter.extract_actions(js_code, obj_name).should eq actions
+    Youtube::Interpreter.extract_actions(js_code, obj_name).should eq actions
   end
 end
