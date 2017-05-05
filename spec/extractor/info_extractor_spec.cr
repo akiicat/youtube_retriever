@@ -1,48 +1,40 @@
 require "../spec_helper"
 
-describe InfoExtractor do
+describe Youtube::Webpage do
   describe "#download_webpage" do
-    it "should content body" do
-      video_id = "iDfZua4IS4A"
-      url      = "https://www.youtube.com/watch?v=#{video_id}&gl=US&hl=en&has_verified=1&bpctr=9999999999"
-      InfoExtractor.download_webpage(url).should contain "<!DOCTYPE html>"
+    it "content body" do
+      url = "https://www.youtube.com/embed/iDfZua4IS4A"
+      Youtube::Webpage.new(url).content.should contain "<!DOCTYPE html>"
     end
-  end
 
-  describe "#extract_id" do
-    context "should extract video id from" do
-      it "url" do
-        url = "https://www.youtube.com/watch?v=iDfZua4IS4A&has_verified=1"
-        InfoExtractor.extract_id(url).should eq "iDfZua4IS4A"
+    pending do
+      it "error link" do
+        url = "https://error.link/"
+        Youtube::Webpage.new(url).should expect error
       end
-
-      it "short url" do
-        url = "https://youtu.be/iDfZua4IS4A"
-        InfoExtractor.extract_id(url).should eq "iDfZua4IS4A"
-      end
-
-      it "video id" do
-        url = "iDfZua4IS4A"
-        InfoExtractor.extract_id(url).should eq "iDfZua4IS4A"
-      end
-    end
-  end
-
-  describe "#get_video_info" do
-    it "should get video info" do
-      video_id = "iDfZua4IS4A"
-      InfoExtractor.get_video_info(video_id).has_key?("token").should be_true
     end
   end
 
   describe "#extract_player_url" do
-    it "should extract player_url from webpage" do
-      video_id = "iDfZua4IS4A"
-      url = "https://www.youtube.com/watch?v=#{video_id}&gl=US&hl=en&has_verified=1&bpctr=9999999999"
-      video_webpage = InfoExtractor.download_webpage(url)
+    it "get player_url" do
+      url = "https://www.youtube.com/embed/iDfZua4IS4A"
       player_url = %r(https://www.youtube.com/yts/jsbin/(.+)/base.js)
 
-      InfoExtractor.extract_player_url(video_webpage).should match player_url
+      Youtube::Webpage.new(url).extract_player_url.should match player_url
+    end
+
+    pending do
+      it "error" do
+        url = "https://www.google.com/"
+        Youtube::Webpage.new(url).extract_player_url.should be error
+      end
+    end
+  end
+
+  describe "#extract_sts" do
+    it "get sts" do
+      url = "https://www.youtube.com/embed/iDfZua4IS4A"
+      Youtube::Webpage.new(url).extract_sts.should match %r(^(|17277)$)
     end
   end
 end
