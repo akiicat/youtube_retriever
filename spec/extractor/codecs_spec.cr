@@ -1,6 +1,6 @@
 require "../spec_helper"
 
-describe Codecs do
+describe Youtube::Codecs do
   describe "#format" do
     it "default" do
       rtn = {
@@ -14,7 +14,7 @@ describe Codecs do
         :audio_bitrate    => "192",
         :comment          => "default"
       }
-      Codecs.format("22").should eq rtn
+      Youtube::Codecs.format("22").should eq rtn
     end
 
     it "video only" do
@@ -29,7 +29,7 @@ describe Codecs do
         :audio_bitrate    => "",
         :comment          => "video only"
       }
-      Codecs.format("137").should eq rtn
+      Youtube::Codecs.format("137").should eq rtn
     end
 
     it "audio only" do
@@ -44,7 +44,7 @@ describe Codecs do
         :audio_bitrate    => "160",
         :comment          => "audio only"
       }
-      Codecs.format("251").should eq rtn
+      Youtube::Codecs.format("251").should eq rtn
     end
 
     it "live stream" do
@@ -59,7 +59,7 @@ describe Codecs do
         :audio_bitrate    => "256",
         :comment          => "live stream"
       }
-      Codecs.format("95").should eq rtn
+      Youtube::Codecs.format("95").should eq rtn
     end
   end
 end
