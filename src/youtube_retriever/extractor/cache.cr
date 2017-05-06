@@ -1,4 +1,3 @@
-
 module Youtube
   class Cache
     PATH = "#{ENV["HOME"]}/.cache/crystal/youtube_retriever/"

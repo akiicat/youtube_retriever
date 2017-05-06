@@ -37,5 +37,9 @@ module Youtube
       LOG.error "[EXTRACT] can't find sts"
       raise "can't find sts"
     end
+
+    def extract_video_info
+      JSON.parse(URI.decode_www_form(@content).to_json).as_h
+    end
   end
 end

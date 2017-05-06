@@ -1,5 +1,3 @@
-require "./interpreter"
-
 module Youtube
   class Decipherer
     property url   : String

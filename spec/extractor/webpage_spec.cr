@@ -34,7 +34,16 @@ describe Youtube::Webpage do
   describe "#extract_sts" do
     it "get sts" do
       url = "https://www.youtube.com/embed/iDfZua4IS4A"
-      Youtube::Webpage.new(url).extract_sts.should match %r(^(|\d+)$)
+      Youtube::Webpage.new(url).extract_sts.should match %r(^(\d*)$)
+    end
+  end
+
+
+  describe "#extract_video_info" do
+    it "video_info" do
+      video_id = "6YpYgT2B6Hg"
+      url = "https://www.youtube.com/get_video_info?&video_id=#{video_id}&el=embedded&ps=default&gl=US&hl=en&sts=&eurl=https://www.google.com"
+      Youtube::Webpage.new(url).extract_video_info["video_id"].should eq video_id
     end
   end
 end
