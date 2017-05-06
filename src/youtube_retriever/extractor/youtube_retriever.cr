@@ -1,45 +1,68 @@
 module Youtube
   class Retriever
+    property url : String
     property video_id : String
+    getter video_info : VideoInfo
+    getter decipher : Decipherer
+    getter streams : Array(Hash(Symbol, String))
 
     def initialize(url : String)
       @url = url
-      @video_id = extract_id
+      @video_id = ""
       @video_info = VideoInfo.allocate
       @decipher = Decipherer.allocate
+      @streams = Array(Hash(Symbol, String)).new
+
+      real_extract
     end
 
     def self.dump_json(url : String)
-      new(url).real_extract
+      retriever = new(url)
+      video_info = retriever.video_info
+      {
+        :title          => video_info.title,
+        :author         => video_info.author,
+        :thumbnail_url  => video_info.thumbnail_url,
+        :length_seconds => video_info.length_seconds,
+        :streams        => retriever.streams
+      }
+    end
+
+    def self.video_info(url : String)
+      retriever = new(url)
+      video_info = retriever.video_info
+      {
+        :title          => video_info.title,
+        :author         => video_info.author,
+        :thumbnail_url  => video_info.thumbnail_url,
+        :length_seconds => video_info.length_seconds,
+      }
+    end
+
+    def self.video_urls(url : String)
+      new(url).streams.select { |x| x[:comment] == "default" }
     end
 
     def self.video_only(url : String)
+      new(url).streams.select { |x| x[:comment] == "video only" }
     end
 
     def self.audio_only(url : String)
+      new(url).streams.select { |x| x[:comment] == "audio only" }
     end
 
-    def self.defualt_video(url : String)
+    def self.urls(url : String)
+      new(url).streams.select { |x| x[:comment] == "default" }.map { |x| x[:url] }
     end
 
-    def self.info(url : String)
-    end
-
-    def real_extract
+    private def real_extract
       LOG.info "Downloading video webpage: #{@video_id}"
       embed = Webpage.new("https://www.youtube.com/embed/#{@video_id}")
 
+      @video_id = extract_id
       @video_info = VideoInfo.new(@video_id, embed.extract_sts)
       @decipher = Decipherer.new(embed.extract_player_url)
-
-      decoded_streams = [@video_info.url_encoded_fmt_stream_map, @video_info.adaptive_fmts].join(",")
-      rtn = {
-        :title          => @video_info.title,
-        :author         => @video_info.author,
-        :thumbnail_url  => @video_info.thumbnail_url,
-        :length_seconds => @video_info.length_seconds,
-        :streams        => @decipher.package(decoded_streams)
-      }
+      @streams = @decipher.package([@video_info.url_encoded_fmt_stream_map, @video_info.adaptive_fmts].join(","))
     end
 
     private def extract_id
