@@ -34,7 +34,7 @@ describe Youtube::Webpage do
   describe "#extract_sts" do
     it "get sts" do
       url = "https://www.youtube.com/embed/iDfZua4IS4A"
-      Youtube::Webpage.new(url).extract_sts.should match %r(^(|17277)$)
+      Youtube::Webpage.new(url).extract_sts.should match %r(^(|\d+)$)
     end
   end
 end

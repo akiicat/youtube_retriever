@@ -7,7 +7,7 @@ require "./youtube_retriever/helpers/*"
 require "./youtube_retriever/extractor/cache"
 require "./youtube_retriever/extractor/codecs"
 require "./youtube_retriever/extractor/interpreter"
-require "./youtube_retriever/extractor/info_extractor"
+require "./youtube_retriever/extractor/webpage"
 
 # class
 require "./youtube_retriever/extractor/decipherer"
