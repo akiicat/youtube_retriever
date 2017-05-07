@@ -3,6 +3,8 @@ require "logger"
 require "http/client"
 require "./youtube_retriever/helpers/*"
 
+require "./youtube_retriever/version"
+
 # module
 require "./youtube_retriever/extractor/interpreter"
 require "./youtube_retriever/extractor/webpage"
