@@ -24,13 +24,19 @@ crystal deps
 
 ## Usage
 
+Require
+
 ```cr
 require "youtube_retriever"
-
-YoutubeRetriever.dump_json("iDfZua4IS4A")
 ```
 
-Retrieve message
+Dump Json
+
+```cr
+Youtube::Retriever.dump_json("iDfZua4IS4A")
+```
+
+Recieved message
 
 ```json
 {
@@ -53,6 +59,15 @@ Retrieve message
     }
   ]
 }
+```
+
+Usage
+
+```cr
+Youtube::Retriever.dump_json("iDfZua4IS4A")       # all video data
+Youtube::Retriever.video_info("iDfZua4IS4A")      # video info only
+Youtube::Retriever.get_video_urls("iDfZua4IS4A")  # default streams
+Youtube::Retriever.get_audio_urls("iDfZua4IS4A")  # audio only
 ```
 
 ## Development

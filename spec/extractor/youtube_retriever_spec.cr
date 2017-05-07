@@ -58,42 +58,33 @@ describe Youtube::Retriever do
     end
   end
 
-  describe "#video_urls" do
-    it "video_urls" do
-      rtn = Youtube::Retriever.video_urls("iDfZua4IS4A")
+  describe "#get_video_urls" do
+    it "sort by video resolution" do
+      Youtube::Retriever.get_video_urls("iDfZua4IS4A").first[:itag].should eq "22"
+    end
+
+    it "count" do
+      rtn = Youtube::Retriever.get_video_urls("iDfZua4IS4A")
       rtn.select { |x| x[:comment] == "default" }.size.should eq rtn.size
     end
 
     it "not be zero" do
-      Youtube::Retriever.video_urls("iDfZua4IS4A").size.should_not eq 0
+      Youtube::Retriever.get_video_urls("iDfZua4IS4A").size.should_not eq 0
     end
   end
 
-  describe "#video_only" do
-    it "video_only" do
-      rtn = Youtube::Retriever.video_only("iDfZua4IS4A")
-      rtn.select { |x| x[:comment] == "video only" }.size.should eq rtn.size
-    end
-
-    it "not be zero" do
-      Youtube::Retriever.video_only("iDfZua4IS4A").size.should_not eq 0
-    end
-  end
-
-  describe "#audio_only" do
+  describe "#get_audio_urls" do
     it "audio_only" do
-      rtn = Youtube::Retriever.audio_only("iDfZua4IS4A")
+      Youtube::Retriever.get_audio_urls("iDfZua4IS4A").first[:itag].should eq "251"
+    end
+
+    it "count" do
+      rtn = Youtube::Retriever.get_audio_urls("iDfZua4IS4A")
       rtn.select { |x| x[:comment] == "audio only" }.size.should eq rtn.size
     end
 
     it "not be zero" do
-      Youtube::Retriever.audio_only("iDfZua4IS4A").size.should_not eq 0
-    end
-  end
-
-  describe "#urls" do
-    it "only url" do
-      Youtube::Retriever.urls("iDfZua4IS4A").first.should match /^https?/
+      Youtube::Retriever.get_audio_urls("iDfZua4IS4A").size.should_not eq 0
     end
   end
 end

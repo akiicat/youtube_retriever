@@ -39,20 +39,18 @@ module Youtube
       }
     end
 
-    def self.video_urls(url : String)
-      new(url).streams.select { |x| x[:comment] == "default" }
+    def self.get_video_urls(url : String)
+      new(url)
+          .streams
+          .select { |x| x[:comment] == "default" }
+          .sort { |a, b| b[:video_resolution].to_i(strict: false) <=> a[:video_resolution].to_i(strict: false) }
     end
 
-    def self.video_only(url : String)
-      new(url).streams.select { |x| x[:comment] == "video only" }
-    end
-
-    def self.audio_only(url : String)
-      new(url).streams.select { |x| x[:comment] == "audio only" }
-    end
-
-    def self.urls(url : String)
-      new(url).streams.select { |x| x[:comment] == "default" }.map { |x| x[:url] }
+    def self.get_audio_urls(url : String)
+      new(url)
+          .streams
+          .select { |x| x[:comment] == "audio only" }
+          .sort { |a, b| b[:audio_bitrate].to_i(strict: false) <=> a[:audio_bitrate].to_i(strict: false) }
     end
 
     private def real_extract
