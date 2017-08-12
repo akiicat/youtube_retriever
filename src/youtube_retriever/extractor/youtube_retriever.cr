@@ -20,6 +20,7 @@ module Youtube
       retriever = new(url)
       video_info = retriever.video_info
       {
+        :video_id           => video_info.video_id,
         :title              => video_info.title,
         :author             => video_info.author,
         :thumbnail_url      => video_info.thumbnail_url,
@@ -33,6 +34,7 @@ module Youtube
       retriever = new(url)
       video_info = retriever.video_info
       {
+        :video_id           => video_info.video_id,
         :title              => video_info.title,
         :author             => video_info.author,
         :thumbnail_url      => video_info.thumbnail_url,
