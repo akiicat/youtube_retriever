@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/akiicat/youtube_retriever.svg?branch=master)](https://travis-ci.org/akiicat/youtube_retriever)
+[![Build Status](https://circleci.com/gh/akiicat/youtube_retriever.png?style=shield)](https://circleci.com/gh/akiicat/youtube_retriever)
 
 # Youtube Retriever
 
