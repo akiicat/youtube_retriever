@@ -54,10 +54,11 @@ module Youtube
     end
 
     private def real_extract
+      @video_id = extract_id
+      
       LOG.info "Downloading video webpage: #{@video_id}"
       embed = Webpage.new("https://www.youtube.com/embed/#{@video_id}")
 
-      @video_id = extract_id
       @video_info = VideoInfo.new(@video_id, embed.extract_sts)
       @decipher = Decipherer.new(embed.extract_player_url)
       @streams = @decipher.package([@video_info.url_encoded_fmt_stream_map, @video_info.adaptive_fmts].join(","))
