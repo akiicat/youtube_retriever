@@ -20,11 +20,12 @@ module Youtube
       retriever = new(url)
       video_info = retriever.video_info
       {
-        :title          => video_info.title,
-        :author         => video_info.author,
-        :thumbnail_url  => video_info.thumbnail_url,
-        :length_seconds => video_info.length_seconds,
-        :streams        => retriever.streams
+        :title              => video_info.title,
+        :author             => video_info.author,
+        :thumbnail_url      => video_info.thumbnail_url,
+        :max_thumbnail_url  => video_info.max_thumbnail_url,
+        :length_seconds     => video_info.length_seconds,
+        :streams            => retriever.streams
       }
     end
 
@@ -32,10 +33,11 @@ module Youtube
       retriever = new(url)
       video_info = retriever.video_info
       {
-        :title          => video_info.title,
-        :author         => video_info.author,
-        :thumbnail_url  => video_info.thumbnail_url,
-        :length_seconds => video_info.length_seconds,
+        :title              => video_info.title,
+        :author             => video_info.author,
+        :thumbnail_url      => video_info.thumbnail_url,
+        :max_thumbnail_url  => video_info.max_thumbnail_url,
+        :length_seconds     => video_info.length_seconds,
       }
     end
 

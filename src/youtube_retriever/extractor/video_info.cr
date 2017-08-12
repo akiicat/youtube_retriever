@@ -38,5 +38,9 @@ module Youtube
     expand length_seconds
     expand url_encoded_fmt_stream_map
     expand adaptive_fmts
+
+    def max_thumbnail_url
+      @content["thumbnail_url"]?.to_s.sub "/default.jpg", "/maxresdefault.jpg"
+    end
   end
 end
