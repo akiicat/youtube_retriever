@@ -7,10 +7,9 @@ describe Youtube::Webpage do
       Youtube::Webpage.new(url).content.should contain "<!DOCTYPE html>"
     end
 
-    pending do
-      it "error link" do
-        url = "https://error.link/"
-        Youtube::Webpage.new(url).should expect error
+    it "error link" do
+      expect_raises do
+        Youtube::Webpage.new("https://error.link/")
       end
     end
   end
@@ -23,10 +22,9 @@ describe Youtube::Webpage do
       Youtube::Webpage.new(url).extract_player_url.should match player_url
     end
 
-    pending do
-      it "error" do
-        url = "https://www.google.com/"
-        Youtube::Webpage.new(url).extract_player_url.should be error
+    it "error page" do
+      expect_raises do
+        Youtube::Webpage.new("https://www.google.com/").extract_player_url
       end
     end
   end
