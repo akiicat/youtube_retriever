@@ -8,7 +8,7 @@ describe Youtube::Webpage do
     end
 
     it "error link" do
-      expect_raises do
+      expect_raises Exception do
         Youtube::Webpage.new("https://error.link/")
       end
     end
@@ -23,7 +23,7 @@ describe Youtube::Webpage do
     end
 
     it "error page" do
-      expect_raises do
+      expect_raises Exception do
         Youtube::Webpage.new("https://www.google.com/").extract_player_url
       end
     end
